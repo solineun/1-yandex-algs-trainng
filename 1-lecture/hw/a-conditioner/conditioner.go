@@ -21,60 +21,33 @@ import (
 // Выходной файл должен содержать одно целое число — температуру, которая установится в комнате через час.
 
 func main() {
-	var tt string 
-	fmt.Fscan(os.Stdin, tt)
+	var troom, tcond, mode string 
+	fmt.Fscan(os.Stdin, &troom, &tcond, &mode)
 
-	var mode string
-	fmt.Fscan(os.Stdin, mode)
-
-	res := SetTemperature(tt, mode)
-	fmt.Fprint(os.Stdout, res)
+	res := SetTemperature(troom, tcond, mode)
+	fmt.Println(res)	
 }
 
-func SetTemperature(tt, mode string) int {
-	var troom int 
-	var tcond int
-
-	var spaceIdx int = -1
-	for i, ch := range tt {
-		if ch == ' ' {
-			spaceIdx = i
-		}
-	}
-
-	if spaceIdx < 0 {
-		return 0
-	}
-
-	troom, err := strconv.Atoi(tt[:spaceIdx])
-	if err != nil {
-		return 0
-	}
-	tcond, err = strconv.Atoi(tt[spaceIdx + 1:])
-	if err != nil {
-		return 0
-	}
-
-	if troom < -50 || troom > 50 || tcond < -50 || tcond > 50 {
-		return 0
-	}
-	
+func SetTemperature(trooms, tconds, mode string) int {
+	troomi, _ := strconv.Atoi(trooms)
+	tcondi, _ := strconv.Atoi(tconds)
 	switch mode {
 	case "freeze":
-		if tcond > troom {
-			return troom
+		if tcondi > troomi {
+			return troomi
 		}
-		return tcond
+		return tcondi
 	case "heat":
-		if tcond < troom {
-			return troom
+		if tcondi < troomi {
+			return troomi
 		}
-		return tcond
+		return tcondi
 	case "auto":
-		return tcond
+		return tcondi
 	case "fan":
-		return troom
+		return troomi
 	default:
+		fmt.Println("default")
 		return 0
 	}
 }
