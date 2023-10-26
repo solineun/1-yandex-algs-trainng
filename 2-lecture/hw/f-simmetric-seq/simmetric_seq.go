@@ -36,10 +36,21 @@ func read() (int, []int) {
 
 func MakeSimmetric(n int, slc []int) (int, []int) {
 	ans := []int{}
-	for i := len(slc) - 1; i >= 0 ; i++ {
+	for i := 0; i < len(slc); i++ {
 		if !isSimmetric(slc[i:]) {
-			ans = append(ans, n)
-		} 
+			ans = append(ans, slc[i])
+		} else {
+			break
+		}
+	}
+	head := 0
+	tail := len(ans) - 1
+	for head < tail {
+		ans[head] = ans[head] + ans[tail]
+		ans[tail] = ans[head] - ans[tail]
+		ans[head] = ans[head] - ans[tail]
+		head++
+		tail--
 	}
 	return len(ans), ans
 }
